@@ -35,6 +35,21 @@ constructor(){
         newBlock.hash = newBlock.calculateHash();
         this.chain.push(newBlock);
     }
+    isBlockchainValid() {
+        for (let i =  1; i < this.chain.length; i++){
+            const currentBlock = this.chain[i];
+            const previousBlock = this.chain[i-1];
+    
+            if (currentBlock.hash !== currentBlock.calculateHash()){
+                return false;
+            }
+    
+            if (currentBlock.previousHash !== previousBlock.hash){
+                return false;
+            }
+            return true;
+        }
+    }
 
 }
 
@@ -44,4 +59,7 @@ const block = new Block("2020-02-02", {amount: 5});
 
 joshcoin.addBlock(block);
 
-console.log(joshcoin);
+console.log(joshcoin.isBlockchainValid());
+
+joshcoin.chain[1].data = "HACKED";
+console.log(joshcoin.isBlockchainValid()); 
